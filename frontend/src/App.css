@@ -40,6 +40,12 @@ button:hover {
   display: flex;
 }
 
+/* Navbar  styles */
+
+.app-navbar {
+  width: 100%;
+}
+
 /* SIDEBAR STYLES */
 
 .app-sidebar {
