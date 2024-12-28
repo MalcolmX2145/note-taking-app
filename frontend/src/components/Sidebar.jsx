@@ -31,6 +31,7 @@ const Sidebar = ({notes, onAddNote, onDeleteNote, setActiveNote, activeNote}) =>
 ))}
 
              </div>
+             
     </div>
   )
 }

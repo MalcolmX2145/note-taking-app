@@ -2,43 +2,42 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 
-// Create an instance of Express
-const app = express();
-
-// Parse incoming JSON requests
-app.use(express.json());
-
-app.use(cors()); // Use CORS middleware
-
-// Create a MySQL database connection
-const db = mysql.createConnection({
-  host: "127.0.0.1",
-  port: 3306,
+const db = mysql.createPool({
+  connectionLimit: 10, // Adjust as needed
+  host: "localhost",
   user: "root",
-  password: "Ekajjaz@217",
-  database: "crud",
+  password: "",
+  database: "designlogin",
+  port: 3306,
 });
 
-// Define the login route
-app.post("/login", (req, res) => {
-  const sql = "SELECT * FROM crud.login WHERE email = ? AND password = ?";
+const app = express();
 
-  db.query(sql, [req.body.email, req.body.password], (err, data) => {
+app.use(express.json());
+app.use(cors());
+
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+
+  const sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
+  db.query(sql, [username, password], (err, result) => {
     if (err) {
-      console.error("MySQL Query Error:", err); // Log the error for debugging
-      return res
+      res
         .status(500)
-        .json({ message: "An error occurred while querying the database" });
-    }
-    if (data.length > 0) {
-      return res.json("Login Successful");
+        .json({ message: "An error occurred while processing your request." });
     } else {
-      return res.json("No Record");
+      if (result.length > 0) {
+        res.status(200).json({ message: "Login successful" });
+      } else {
+        res
+          .status(401)
+          .json({ message: "Login failed. Invalid username or password." });
+      }
     }
   });
 });
 
-// Start the server
-app.listen(8081, () => {
-  console.log("Listening on port 8081");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

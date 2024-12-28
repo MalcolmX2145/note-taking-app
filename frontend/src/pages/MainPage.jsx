@@ -3,11 +3,17 @@ import uuid from 'react-uuid';
 import '../App.css';
 import Sidebar from '../components/Sidebar';
 import Main from '../components/Main';
+import { useNavigate } from 'react-router-dom';
 
 const MainPage = () => {
     // states.
     const [notes, setNotes] = useState(localStorage.notes ? JSON.parse(localStorage.notes) : []);
     const [activeNote, setActiveNote] = useState(false);
+    const navigate = useNavigate(); // Initialize useNavigate hook
+
+    const handleLogout = () => {
+        navigate('/login');
+    };
 
     // store the data in browser
     useEffect(() => {
@@ -53,6 +59,9 @@ const MainPage = () => {
         <div className="App">
         <Sidebar notes={notes} onAddNote={onAddNote} onDeleteNote={onDeleteNote} activeNote={activeNote} setActiveNote={setActiveNote}/>
         <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote}/>
+        <button onClick={handleLogout} className=" bg-blue-500 text-white mt-12 py-2 px-12 rounded-md hover:bg-blue-600">
+            Logout
+        </button>
         </div>
     )
 }
