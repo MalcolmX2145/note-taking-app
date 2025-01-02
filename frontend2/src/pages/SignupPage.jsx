@@ -2,15 +2,16 @@
 import { useState } from 'react';
 import axios from 'axios'; // Import Axios
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
-import '../LoginPage.css'
+import '..//SignupPage.css';
 
 
-function LoginPage(props) {
-    // State variables for email, username, password, and error message
+function SignupPage() {
+    // State variables for email, username, password, and error/success messages
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     // Initialize useNavigate hook for navigation
     const navigate = useNavigate();
@@ -19,28 +20,30 @@ function LoginPage(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Clear previous error messages
+            // Clear previous messages
             setErrorMessage('');
+            setSuccessMessage('');
 
-            // Send login request to server
-            const response = await axios.post('http://localhost:3000/login', { email, username, password });
+            // Send signup request to server
+            const response = await axios.post('http://localhost:4000/signup', { email, username, password });
 
-            // If login successful, redirect to MainPage
-            if (response.status === 200) {
-                navigate('/');
+            // If signup successful, display success message and navigate
+            if (response.status === 201) {
+                setSuccessMessage('Signup successful! Redirecting to login...');
+                setTimeout(() => navigate('/login'), 2000); // Redirect after 2 seconds
             }
         } catch (error) {
             console.error('Error:', error);
 
-            // If login failed, display error message
-            setErrorMessage('Your Email, Username, or Password are incorrect.');
+            // If signup failed, display error message
+            setErrorMessage('Signup failed. Please try again.');
         }
     };
 
-    // JSX structure for login form
+    // JSX structure for signup form
     return (
-        <div className="login-container">
-            <h2>Login</h2>
+        <div className="signup-container">
+            <h2>Signup</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="email">Email:</label>
@@ -49,6 +52,7 @@ function LoginPage(props) {
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
@@ -58,6 +62,7 @@ function LoginPage(props) {
                         id="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        required
                     />
                 </div>
                 <div>
@@ -67,14 +72,15 @@ function LoginPage(props) {
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        required
                     />
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit">Signup</button>
+                {successMessage && <p className="success-message">{successMessage}</p>}
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
             </form>
         </div>
     );
-    
 }
 
-export default LoginPage;
+export default SignupPage;

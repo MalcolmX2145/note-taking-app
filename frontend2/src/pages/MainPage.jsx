@@ -10,6 +10,7 @@ import NoteForm from '../components/NoteForm';
 import NoteList from '../components/NoteList';
 import NoteEditor from '../components/NoteEditor';
 import Navbar from '../components/Navbar';
+import '../index.css'
 
 function MainPage() {
   const [notes, setNotes] = useState([]);
@@ -72,10 +73,10 @@ function MainPage() {
 
   return (
     <>
-    <div className='app-navbar'>
+    <div className='navbar'>
       <Navbar />
     </div>
-      <div className="app">
+    <div className="app">
       <h1>Notes Keeping App <FaRegStickyNote className='icon' /></h1>
       {editingNote ? (
         <NoteEditor
