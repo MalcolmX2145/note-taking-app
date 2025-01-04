@@ -29,7 +29,7 @@ export const createNote = async(req, res) => {
 // get note
 export const getNotes = async(req, res) => {
     try{
-        const {userId, ...userNotes} = await prisma.note.find({
+        const {userId, ...userNotes} = await prisma.note.findMany({
             where: { userId: req.user.id }
         })
 
