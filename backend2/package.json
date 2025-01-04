@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "go": "nodemon serverLogin.js"
+    "go": "nodemon serverLogin.js",
+    "begin": "nodemon serverSignup.js"
   },
   "keywords": [],
   "author": "",

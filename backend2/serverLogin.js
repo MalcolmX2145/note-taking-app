@@ -16,11 +16,19 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Login route requiring email, username, and password
 app.post("/login", (req, res) => {
-  const { username, password } = req.body;
+  const { email, username, password } = req.body;
 
-  const sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
-  db.query(sql, [username, password], (err, result) => {
+  // Validate that all fields are provided
+  if (!email || !username || !password) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  // Login with email, username, and password
+  const sql =
+    "SELECT * FROM Users WHERE email = ? AND username = ? AND password = ?";
+  db.query(sql, [email, username, password], (err, result) => {
     if (err) {
       res
         .status(500)
@@ -31,7 +39,9 @@ app.post("/login", (req, res) => {
       } else {
         res
           .status(401)
-          .json({ message: "Login failed. Invalid username or password." });
+          .json({
+            message: "Login failed. Invalid email, username, or password.",
+          });
       }
     }
   });
