@@ -12,6 +12,9 @@ import NoteEditor from '../components/NoteEditor';
 import Navbar from '../components/Navbar';
 import '../index.css'
 
+// import { useContext } from 'react';
+// import { AuthContext } from '../context/AuthContext';
+
 function MainPage() {
   const [notes, setNotes] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,29 +22,27 @@ function MainPage() {
 
   // Fetch notes from the backend
   useEffect(() => {
-    axios.get('http://localhost:5000/notes')
+    axios.get('http://localhost:5000/api/notes', { withCredentials: true })
       .then(response => setNotes(response.data))
       .catch(error => console.error('Error fetching notes:', error));
   }, []);
 
   const addNote = (title, content) => {
     const newNote = {
-      id: uuidv4(),
       title,
       content,
-      createdAt: new Date().toISOString(),
     };
 
-    axios.post('http://localhost:5000/notes', newNote)
+    axios.post('http://localhost:5000/api/notes/create', newNote, { withCredentials: true })
       .then(response => {
         setNotes([...notes, newNote]);
-        toast.success('Note added successfully!');
+        toast.success(response.message);
       })
       .catch(error => console.error('Error adding note:', error));
   };
 
   const deleteNote = (id) => {
-    axios.delete(`http://localhost:5000/notes/${id}`)
+    axios.delete(`http://localhost:5000/api/notes/${id}`, { withCredentials: true })
       .then(response => {
         setNotes(notes.filter(note => note.id !== id));
         toast.error('Note deleted successfully!');
@@ -52,7 +53,7 @@ function MainPage() {
   const updateNote = (id, title, content) => {
     const updatedAt = new Date().toISOString();
 
-    axios.put(`http://localhost:5000/notes/${id}`, { title, content, updatedAt })
+    axios.put(`http://localhost:5000/api/notes/${id}`, { title, content, updatedAt })
       .then(response => {
         setNotes(notes.map(note => note.id === id ? { ...note, title, content, updatedAt } : note));
         setEditingNote(null);
@@ -65,11 +66,11 @@ function MainPage() {
     setEditingNote(null);
   };
 
-  const filteredNotes = notes.filter(
-    (note) =>
-      note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredNotes = notes.filter(
+  //   (note) =>
+  //     note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     note.content.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
   return (
     <>
@@ -96,7 +97,7 @@ function MainPage() {
           className="search-input"
         />
       </div>
-      <NoteList notes={filteredNotes} deleteNote={deleteNote} setEditingNote={setEditingNote} />
+      <NoteList notes={notes} deleteNote={deleteNote} setEditingNote={setEditingNote} />
 
       <ToastContainer />
     </div>

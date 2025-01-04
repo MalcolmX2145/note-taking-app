@@ -83,14 +83,14 @@ export const login = async (req, res) => {
 
         // generate the access token
         const accessToken = jwt.sign(
-            { id: existingUser.id },
+            { id: existingUser.id, firstName: existingUser.firstName, lastName: existingUser.lastName },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: "1h" }
         );
   
         // generate the refresh token
         const refreshToken = jwt.sign(
-            { id: existingUser.id },
+            { id: existingUser.id, firstName: existingUser.firstName, lastName: existingUser.lastName },
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: "1d" }
         );
@@ -98,17 +98,24 @@ export const login = async (req, res) => {
         // send the access token and the refresh token as cookies
         res.cookie("access-token", accessToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: "Strict",
+            secure: false,
+            sameSite: "Lax",
+            path: '/',
         });
   
-        res.cookie("refresh-token", refreshToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "Strict",
-        });
+        // res.cookie("refresh-token", refreshToken, {
+        //     httpOnly: true,
+        //     secure: false,
+        //     sameSite: "Lax",
+        // });
 
-        res.status(200).json({ message: "Login successfull" })
+        res.status(200).json({ 
+            message: "Login successful",
+            tokens: {
+                "access-token": accessToken,
+                "refresh-token": refreshToken
+            }
+         })
     }
     catch(err) {
         res.status(500).json({ message: "Internal Server Error", err })

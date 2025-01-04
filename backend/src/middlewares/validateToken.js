@@ -6,8 +6,12 @@ dotenv.config()
 
 export const validateToken = (req, res, next) => {
     try{
-        // get the access token
-        const accessToken = req.cookies["access-token"]
+        // Get the access token from either the Authorization header or cookies
+        //  const authHeader = req.headers["authorization"];
+        //  const accessToken = authHeader ? authHeader.split('.')[1] : req.cookies['access-token'];
+
+        console.log("Cookies received in /api/user/get-user:", req.cookies);
+        const accessToken = req.cookies['access-token']
 
         if(!accessToken){
             return res.status(403).json({ message: "You do not have acess" })
