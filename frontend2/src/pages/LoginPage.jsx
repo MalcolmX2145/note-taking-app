@@ -1,52 +1,55 @@
-// Import React and necessary hooks
-import { useState } from 'react';
-import axios from 'axios'; // Import Axios
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import React, { useContext, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { Cookies, useCookies } from "react-cookie";
+import { jwtDecode } from 'jwt-decode';
 
-function LoginPage(props) {
-    // State variables for username, password, and error message
-    const [username, setUsername] = useState('');
+function LoginPage() {
+    const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-
-    // Initialize useNavigate hook for navigation
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const { setUser, setLoggedIn } = useContext(AuthContext)
 
-    // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Clear previous error messages
-            setErrorMessage('');
+            setMessage('');
+            const response = await axios.post(
+                'http://localhost:5000/api/auth/login',
+                { emailAddress, password },
+                { withCredentials: true }
+            );
+            setMessage(response.data.message);
+            localStorage.setItem("access-token", response.data.tokens['access-token'])
+            setLoggedIn(true)
+            setUser(jwtDecode(localStorage.getItem('access-token')))
+            // localStorage.setItem("refresh-token", response.data.tokens['refresh-token'])
 
-            // Send login request to server
-            const response = await axios.post('http://localhost:3000/login', { username, password });
+            // Optionally, you can redirect after successful login
+            navigate('/');  // Or any other route based on your app flow
 
-            // If login successful, redirect to MainPage
-            if (response.status === 200) {
-                navigate('/');
-            }
         } catch (error) {
-            console.error('Error:', error);
-
-            // If login failed, display error message
-            setErrorMessage('Your Username and\nPassword are incorrect.');
+            if (error.response) {
+                console.error(error.response.data);
+                setMessage(error.response.data.message);
+            }
         }
     };
 
-    // JSX structure for login form
     return (
         <div className="flex items-center justify-center min-h-screen">
             <div className="mx-auto p-6 bg-white rounded-md shadow-md">
                 <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label htmlFor="username" className="block mb-2">Username:</label>
+                        <label htmlFor="emailAddress" className="block mb-2">Email Address:</label>
                         <input
-                            type="text"
-                            id="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            type="email"
+                            id="emailAddress"
+                            value={emailAddress}
+                            onChange={(e) => setEmailAddress(e.target.value)}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                         />
                     </div>
@@ -61,7 +64,7 @@ function LoginPage(props) {
                         />
                     </div>
                     <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Login</button>
-                    {errorMessage && <p className="text-red-500 text-sm whitespace-pre-line text-center mt-4 ">{errorMessage}</p>} {/* Display error message if exists */}
+                    {message && <p className="text-red-500 text-sm whitespace-pre-line text-center mt-4">{message}</p>}
                 </form>
             </div>
         </div>

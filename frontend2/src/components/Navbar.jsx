@@ -7,8 +7,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+
 export default function Navbar() {
     const navigate = useNavigate(); // Initialize useNavigate hook
+    const { user, loggedIn } = useContext(AuthContext)
 
     const handleLogout = () => {
         navigate('/login');
@@ -27,7 +31,7 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Notes App
+            {loggedIn && user ? `${user.firstName}'s notes` : "Welcome"}
           </Typography>
         <IconButton onClick={handleLogout} aria-label="logout" sx={{ color: 'inherit', '&:hover': {color: 'red', }}}>
             <LogoutIcon />
