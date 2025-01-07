@@ -14,9 +14,10 @@ const App = () => {
         <Route path="/login" element={<LoginPage />}/>
         <Route path="/signup" element={<SignUp />} />
         
-        {/* Wrap the proteccted routes */}
+        
+        {/* // Wrap the proteccted routes */}
         <Route element={ <ProtectedRoutes/> }>
-          <Route path="/" element={<MainPage />}/>  
+            <Route path="/" element={<MainPage />}/>
         </Route> 
       </Routes>
     </AuthProvider>

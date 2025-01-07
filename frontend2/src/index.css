@@ -1,178 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Global CSS */
 * {
-    font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Body Styles */
 body {
-    align-items: center;
-    justify-content: center;
-    background: #EEEEEE;
+  align-items: center;
+  justify-content: center;
+  background: #eeeeee;
 }
 
 /* General styles */
 .app {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .app h1 {
-    text-align: center;
-    color: #232323;
-    font-size: 28px;
-    margin-bottom: 20px;
+  text-align: center;
+  color: #232323;
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
-.app h1>.icon {
-    margin-bottom: -05px;
+.app h1 > .icon {
+  margin-bottom: -05px;
 }
 
 .icon {
-    margin-bottom: -02px;
+  margin-bottom: -02px;
 }
 
 /* NoteForm styles */
 .note-form {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-right: 20px;
 }
 
 .note-form input,
 .note-form textarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .note-form textarea {
-    height: 60px
+  height: 60px;
 }
 
 .note-form button {
-    padding: 8px 16px;
-    background-color: #4caf50;
-    /* Green color */
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-
+  padding: 8px 16px;
+  background-color: #4caf50;
+  /* Green color */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 /* NoteList styles */
 .note-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
 }
 
-
 .note {
-    background-color: #f9f9f9;
-    /* Light gray color */
-    padding: 10px;
-    border-radius: 4px;
+  background-color: #f9f9f9;
+  /* Light gray color */
+  padding: 10px;
+  border-radius: 4px;
 }
 
 .note h2 {
-    /* color: #333; */
-    /* font-size: 18px; */
-    margin-bottom: 10px;
+  /* color: #333; */
+  /* font-size: 18px; */
+  margin-bottom: 10px;
 }
 
 .note p {
-    /* color: #666; */
-    font-size: 16px;
-    margin-bottom: 10px;
+  /* color: #666; */
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
-
 .note-buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .note-buttons button {
-    padding: 6px 12px;
-    margin-left: 10px;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
+  padding: 6px 12px;
+  margin-left: 10px;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .note-buttons .edit-button {
-    background-color: #2196f3;
-    /* Blue color */
+  background-color: #2196f3;
+  /* Blue color */
 }
 
 .note-buttons .delete-button {
-    background-color: #f44336;
-    /* Red color */
+  background-color: #f44336;
+  /* Red color */
 }
 
 /* NoteEditor styles */
 .note-editor {
-    margin-bottom: 20px;
-    padding-right: 20px;
-
+  margin-bottom: 20px;
+  padding-right: 20px;
 }
 
 .note-editor input,
 .note-editor textarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 .note-editor .buttons {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .note-editor .buttons button {
-    padding: 8px 16px;
-    margin-left: 10px;
-    background-color: #2196f3;
-    /* Blue color */
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
+  padding: 8px 16px;
+  margin-left: 10px;
+  background-color: #2196f3;
+  /* Blue color */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .search-input-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
 }
 
 .search-input {
-    width: 200px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+  width: 200px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 @media (max-width: 600px) {
-    .note-list {
-        grid-template-columns: 1fr;
-    }
+  .note-list {
+    grid-template-columns: 1fr;
+  }
 
-    .search-input {
-        width: 100%;
-    }
+  .search-input {
+    width: 100%;
+  }
 }
