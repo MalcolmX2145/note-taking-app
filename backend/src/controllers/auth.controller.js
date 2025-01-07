@@ -81,6 +81,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: "Invalid email or password" })
         }
 
+
         // generate the access token
         const accessToken = jwt.sign(
             { id: existingUser.id, firstName: existingUser.firstName, lastName: existingUser.lastName },
@@ -89,11 +90,11 @@ export const login = async (req, res) => {
         );
   
         // generate the refresh token
-        const refreshToken = jwt.sign(
-            { id: existingUser.id, firstName: existingUser.firstName, lastName: existingUser.lastName },
-            process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: "1d" }
-        );
+        // const refreshToken = jwt.sign(
+        //     { id: existingUser.id, firstName: existingUser.firstName, lastName: existingUser.lastName },
+        //     process.env.REFRESH_TOKEN_SECRET,
+        //     { expiresIn: "1d" }
+        // );
 
         // send the access token and the refresh token as cookies
         res.cookie("access-token", accessToken, {
@@ -109,12 +110,14 @@ export const login = async (req, res) => {
         //     sameSite: "Lax",
         // });
 
+        const { password: _, ...userWithoutPassword } = existingUser
         res.status(200).json({ 
             message: "Login successful",
-            tokens: {
-                "access-token": accessToken,
-                "refresh-token": refreshToken
-            }
+            user: userWithoutPassword,
+            // tokens: {
+            //     "access-token": accessToken,
+            //     "refresh-token": refreshToken
+            // }
          })
     }
     catch(err) {
@@ -129,7 +132,7 @@ export const logout = async (req, res) => {
         res.clearCookie("access-token", {
           httpOnly: true,
           secure: true,
-          sameSite: "Strict",
+          sameSite: None,
         });
     
         res.clearCookie("refresh-token", {

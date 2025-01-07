@@ -1,55 +1,33 @@
 import { createContext, useState, useEffect } from "react";
-import { jwtDecode } from 'jwt-decode'; // Correct import for jwt-decode
 import axios from "axios";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [loggedIn, setLoggedIn] = useState(() => {
-        const token = localStorage.getItem('access-token');
-        if (token) {
-            // Decode the token
-            const decodedToken = jwtDecode(token);
-            // Check if the token is expired
-            return decodedToken.exp > Date.now() / 1000;
-        }
-        return false;
-    });
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(localStorage.getItem('access-token') || null);
+    const [user, setUser] = useState(
+        JSON.parse(localStorage.getItem("user")) || null
+    );
+
+    // login
+    const login = async (inputs) => {
+        const response = await axios.post('http://localhost:5000/api/auth/login', inputs, { withCredentials: true })
+        setUser(response.data.user)
+        return response
+    }
+
+
+    //logout
+    const logout = async () => {
+        const response = await axios.post('http://localhost:5000/api/auth/logout', inputs)
+        setUser(null)
+    }
 
     useEffect(() => {
-        const fetchUserDetails = async () => {
-            if (!token) {
-                setLoggedIn(false);
-                setUser(null);
-                return;
-            }
-    
-            // Decode the token
-            const decodedToken = jwtDecode(token);
-            console.log(decodedToken)
-    
-            // Check if the token is expired
-            const isTokenExpired = decodedToken.exp < Date.now() / 1000;
-            if (isTokenExpired) {
-                setLoggedIn(false);
-                setUser(null);
-                return;
-            }
-
-            setLoggedIn(true)
-            setUser(decodedToken)
-
-        };
-    
-        fetchUserDetails();  // Run the function to check token and fetch user details
-        console.log(loggedIn)
-        console.log(user)
-    }, [token]);
+        localStorage.setItem("user", JSON.stringify(user))
+    }, [user]);
 
     return (
-        <AuthContext.Provider value={{ loggedIn, user, setUser, setLoggedIn }}>
+        <AuthContext.Provider value={{ user, setUser, login }}>
             {children}
         </AuthContext.Provider>
     );
