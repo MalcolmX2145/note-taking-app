@@ -8,8 +8,6 @@ export const validateToken = (req, res, next) => {
     // Get the access token from either the Authorization header or cookies
     //  const authHeader = req.headers["authorization"];
     //  const accessToken = authHeader ? authHeader.split('.')[1] : req.cookies['access-token'];
-
-    console.log("Cookies received in /api/user/get-user:", req.cookies);
     const accessToken = req.cookies["access-token"];
 
     if (!accessToken) {
