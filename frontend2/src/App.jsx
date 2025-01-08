@@ -17,7 +17,7 @@ const App = () => {
         
         {/* // Wrap the proteccted routes */}
         <Route element={ <ProtectedRoutes/> }>
-            <Route path="/" element={<MainPage />}/>
+          <Route path="/" element={<MainPage />}/>
         </Route> 
       </Routes>
     </AuthProvider>

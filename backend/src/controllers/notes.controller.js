@@ -28,17 +28,22 @@ export const createNote = async (req, res) => {
 // get note
 export const getNotes = async (req, res) => {
   try {
-    const { userId, ...userNotes } = await prisma.note.findMany({
-      where: { userId: req.user.id },
+    // Ensure the authenticated user ID is retrieved correctly
+    const userId = req.user.id;
+    console.log("User ID:", userId); // Debugging log
+
+    // Fetch only notes belonging to the logged-in user
+    const userNotes = await prisma.note.findMany({
+      where: { userId: userId },
     });
 
-    if (!userNotes) {
-      return res.status(404).json({ message: "You don't have any notes" });
+    if (!userNotes || userNotes.length === 0) {
+      return res.status(404).json({ message: "No notes found for this user" });
     }
 
-    res.status(200).json({ userNotes });
+    res.status(200).json(userNotes);
   } catch (err) {
-    console.error(err);
+    console.error("Error fetching notes:", err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
