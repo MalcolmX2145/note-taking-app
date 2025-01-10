@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     // login function
     const login = async (inputs) => {
         const response = await axios.post(
-            "http://localhost:5000/api/auth/login",
+            "http://localhost:8080/api/auth/login",
             inputs,
             { withCredentials: true }
         );
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
     // logout function
     const logout = async () => {
-        await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
+        await axios.post("http://localhost:8080/api/auth/logout", {}, { withCredentials: true });
         setUser(null);
         setLoggedIn(false); // Mark as logged out
     };
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
         if (!user) return;
 
         axios
-            .get("http://localhost:5000/api/auth/user", { withCredentials: true })
+            .get("http://localhost:8080/api/auth/user", { withCredentials: true })
             .then((res) => {
                 setUser(res.data.user);
                 setLoggedIn(true);
