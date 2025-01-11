@@ -10,17 +10,21 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin:
-      process.env.NODE_ENV === "production"
-        ? "https://note-taking-app-cr7w.onrender.com" // Deployed frontend URL
-        : "http://localhost:5000", // Local development frontend URL
-    credentials: true, // Allow sending cookies
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
-  })
-);
+// Dynamic origin function for CORS
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (process.env.NODE_ENV === "production") {
+      callback(null, "https://note-taking-app-cr7w.onrender.com");
+    } else {
+      callback(null, "http://localhost:5000");
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 
 const __dirname = path.resolve();
 
