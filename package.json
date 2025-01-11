@@ -4,8 +4,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "prisma:generate": "npx prisma generate --schema=backend/prisma/schema.prisma",
+  "postinstall": "npx prisma generate --schema=backend/prisma/schema.prisma",
+    "dev": "powershell -Command \"$env:NODE_ENV='development'; nodemon backend/index.js\"",
+		"build": "npm install && npm install --prefix frontend2 && npm run build --prefix frontend2",
+		"start": "powershell -Command \"$env:NODE_ENV='production'; node backend/index.js\""
   },
   "keywords": [],
   "author": "",
