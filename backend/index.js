@@ -12,7 +12,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://note-taking-app-jiyw.onrender.com", // Updated: Removed trailing slash
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://note-taking-app-jiyw.onrender.com" // Deployed frontend URL
+        : "http://localhost:5173", // Local development frontend URL
     credentials: true, // Allow sending cookies
   })
 );
