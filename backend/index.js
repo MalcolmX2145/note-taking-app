@@ -17,6 +17,7 @@ app.use(
         ? "https://note-taking-app-jiyw.onrender.com" // Deployed frontend URL
         : "http://localhost:5173", // Local development frontend URL
     credentials: true, // Allow sending cookies
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific methods
   })
 );
 
