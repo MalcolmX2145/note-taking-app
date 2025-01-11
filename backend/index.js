@@ -18,6 +18,7 @@ app.use(
         : "http://localhost:5173", // Local development frontend URL
     credentials: true, // Allow sending cookies
     methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
   })
 );
 
