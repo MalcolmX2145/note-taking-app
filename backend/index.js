@@ -14,7 +14,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? "https://note-taking-app-jiyw.onrender.com" // Deployed frontend URL
+        ? "http://localhost:5000" // Deployed frontend URL
         : "http://localhost:5173", // Local development frontend URL
     credentials: true, // Allow sending cookies
     methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific methods
