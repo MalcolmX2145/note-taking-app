@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://note-taking-app-jiyw.onrender.com", // Update this with your frontend's origin
+    origin: "https://note-taking-app-jiyw.onrender.com", // Updated: Removed trailing slash
     credentials: true, // Allow sending cookies
   })
 );
