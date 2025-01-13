@@ -20,7 +20,7 @@ function MainPage() {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/notes', { withCredentials: true });
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/notes`, { withCredentials: true });
 
         if (Array.isArray(response.data)) {
           setNotes(response.data);
@@ -40,14 +40,14 @@ function MainPage() {
   const addNote = async (title, content) => {
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/notes/create',
+        `${import.meta.env.VITE_BACKEND_URL}/api/notes/create`,
         { title, content },
         { withCredentials: true }
       );
 
       if (response.status === 201) {
         toast.success(response.data.message);
-        const newNotes = await axios.get('http://localhost:5000/api/notes', { withCredentials: true });
+        const newNotes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/notes`, { withCredentials: true });
         setNotes(newNotes.data);
       }
     } catch (error) {
@@ -58,7 +58,7 @@ function MainPage() {
   // Delete Note
   const deleteNote = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/notes/${id}`, { withCredentials: true });
+      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/notes/${id}`, { withCredentials: true });
 
       if (response.status === 200) {
         setNotes(notes.filter(note => note.id !== id));
@@ -75,7 +75,7 @@ function MainPage() {
       const updatedAt = new Date().toISOString();
 
       const response = await axios.put(
-        `http://localhost:5000/api/notes/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/notes/${id}`,
         { title, content, updatedAt },
         { withCredentials: true }
       );
