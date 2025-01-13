@@ -19,16 +19,13 @@ const NoteList = ({ notes, deleteNote, setEditingNote }) => {
   };
   return (
     <div className="note-list">
-      {notes.map((note) => (
+    {Array.isArray(notes) && notes.length > 0 ? (
+      notes.map((note) => (
         <div className="note" key={note.id} style={{ backgroundColor: getRandomColor() }}>
           <h2>{note.title}</h2>
           <p>{note.content}</p>
           <p className="note-date">
-            {note.updatedAt ? (
-              `Last Updated: ${formatDate(note.updatedAt)}`
-            ) : (
-              `Created At: ${formatDate(note.createdAt)}`
-            )}
+            {note.updatedAt ? `Last Updated: ${formatDate(note.updatedAt)}` : `Created At: ${formatDate(note.createdAt)}`}
           </p>
           <div className="note-buttons">
             <button className="edit-button" onClick={() => handleEditNote(note)}>
@@ -38,9 +35,13 @@ const NoteList = ({ notes, deleteNote, setEditingNote }) => {
               Delete <FaTrashAlt className='icon'/>
             </button>
           </div>
-          </div>
-        ))};
     </div>
+    ))
+  ) : (
+    <p>No notes available</p>
+  )}
+</div>
+
   )
 }
 
