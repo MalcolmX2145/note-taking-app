@@ -3,51 +3,50 @@ import cookieParser from "cookie-parser";
 import { validateToken } from "./src/middlewares/validateToken.js";
 import cors from "cors";
 import dotenv from "dotenv";
-import path from "path";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
+
 // Dynamic origin function for CORS
 const corsOptions = {
   origin: (origin, callback) => {
     if (process.env.NODE_ENV === "production") {
-      callback(null, "https://note-taking-app-cr7w.onrender.com");
+      // Allow only the production URL in production mode
+      if (origin === process.env.PRODUCTION_URL) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
     } else {
-      callback(null, "http://localhost:5000");
+      // Allow only the development URL in development mode
+      if (origin === process.env.DEVELOPMENT_URL) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
     }
   },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
-
-const __dirname = path.resolve();
 
 // import routes
 import authRoutes from "./src/routes/auth.routes.js";
 import userRoutes from "./src/routes/user.route.js";
 import notesRoutes from "./src/routes/notes.routes.js";
 
-app.get("/tokens", (req, res) => {
-  res.json({ tokens: req.cookies });
-});
 
 // server the routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", validateToken, userRoutes);
 app.use("/api/notes", validateToken, notesRoutes);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "frontend2/dist")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "frontend2", "dist", "index.html"));
-  });
-}
 
 // listen to the PORT
 const PORT = process.env.PORT || 5000;
